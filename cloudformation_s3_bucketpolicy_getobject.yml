@@ -1,0 +1,34 @@
+#パブリックアクセス用のバケットポリシーを含めたS3作成
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A templete for s3 with public bucket policy
+Parameters:
+  EnvPrefix:
+    Type: String
+  BucketName:
+    Type: String
+
+Resources:
+  S3Bucketpublicdata:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Sub ${EnvPrefix}-${BucketName}
+  S3BucketpublicdataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: "S3Bucketpublicdata"
+      PolicyDocument:
+        Statement:
+          -
+            Action:
+              - "s3:GetObject"
+            Effect: "Allow"
+            Resource:
+              Fn::Join:
+                - ""
+                -
+                  - "arn:aws:s3:::"
+                  -
+                    Ref: "S3Bucketpublicdata"
+                  - "/*"
+            Principal: "*"
