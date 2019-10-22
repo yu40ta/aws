@@ -1,0 +1,62 @@
+{
+    "IsEnabled": true,
+    "EngineConfiguration": {
+        "PollInterval": "00:00:15",
+        "Components": [
+            {
+                "Id": "PerformanceCounterMemory",
+                "FullName": "AWS.EC2.Windows.CloudWatch.PerformanceCounterComponent.PerformanceCounterInputComponent,AWS.EC2.Windows.CloudWatch",
+                "Parameters": {
+                    "CategoryName": "Memory",
+                    "CounterName": "Available MBytes",
+                    "InstanceName": "",
+                    "MetricName": "Memory",
+                    "Unit": "Megabytes",
+                    "DimensionName": "InstanceId",
+                    "DimensionValue": "{instance_id}"
+                }
+            },
+            {
+                "Id": "MonitoringFreeSpaceC",
+                "FullName": "AWS.EC2.Windows.CloudWatch.PerformanceCounterComponent.PerformanceCounterInputComponent,AWS.EC2.Windows.CloudWatch",
+                "Parameters": {
+                    "CategoryName": "LogicalDisk",
+                    "CounterName": "% Free Space",
+                    "InstanceName": "C:",
+                    "MetricName": "DiskFree C Drive",
+                    "Unit": "Percent",
+                    "DimensionName": "InstanceId",
+                    "DimensionValue": "{instance_id}"
+                }
+            },
+            {
+                "Id": "CloudWatchLogs",
+                "FullName": "AWS.EC2.Windows.CloudWatch.CloudWatchLogsOutput,AWS.EC2.Windows.CloudWatch",
+                "Parameters": {
+                    "AccessKey": "",
+                    "SecretKey": "",
+                    "Region": "us-east-1",
+                    "LogGroup": "Default-Log-Group",
+                    "LogStream": "{instance_id}"
+                }
+            },
+            {
+                "Id": "CloudWatch",
+                "FullName": "AWS.EC2.Windows.CloudWatch.CloudWatch.CloudWatchOutputComponent,AWS.EC2.Windows.CloudWatch",
+                "Parameters":
+                {
+                    "AccessKey": "",
+                    "SecretKey": "",
+                    "Region": "ap-northeast-1",
+                    "NameSpace": "Custom metrics"
+                }
+            }
+        ],
+        "Flows": {
+            "Flows":
+            [
+                "(PerformanceCounterMemory,MonitoringFreeSpaceC),CloudWatch"
+            ]
+        }
+    }
+}
